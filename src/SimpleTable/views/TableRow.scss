@@ -1,0 +1,18 @@
+.table-row {
+  &__range {
+    display: flex;
+    flex-direction: row;
+
+    > * {
+      margin-right: 10px;
+    }
+  }
+
+  &__description {
+    display: flex;
+    flex-direction: row;
+    > * {
+      margin-right: 10px;
+    }
+  }
+}

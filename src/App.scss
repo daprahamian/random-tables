@@ -1,0 +1,13 @@
+.app {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.action-bar {
+  margin-bottom: 10px;
+}
+
+.action-bar > * {
+  margin-left: 10px;
+}
