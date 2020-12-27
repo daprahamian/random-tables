@@ -1,37 +1,51 @@
-import { Form } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import Group from "react-bootstrap/FormGroup";
+import Label from "react-bootstrap/FormLabel";
+import Control from "react-bootstrap/FormControl";
+import Button from "react-bootstrap/Button";
 import { MdEdit, MdCheck } from "react-icons/md";
 import { useTrueFalse } from "../../util/useTrueFalse";
 import { SimpleTableAction } from "../actions";
 
-export function TableName({
-  name,
-  onNameChange,
-}: {
-  name: string;
-  onNameChange: (x: string) => void;
-}) {
-  const [isEditing, setEditing, setNotEditing] = useTrueFalse();
+import "./TableName.scss";
 
-  if (isEditing) {
-    return (
-      <div className="table-name">
-        <Form.Control
-          as="input"
-          value={name}
-          size="sm"
-          onChange={(e) => onNameChange(e.target.value)}
-        />
-        <MdCheck onClick={setNotEditing} />
-      </div>
-    );
-  } else {
-    return (
-      <div className="table-name">
-        <div onFocus={setEditing}>{name}</div>
-        <MdEdit onClick={setEditing} />
-      </div>
-    );
-  }
+export interface TableNameProps {
+  name: string;
+  onNameChange(name: string): void;
+}
+
+export function TableName({ name, onNameChange }: TableNameProps) {
+  const [isEditing, setEditing, setNotEditing] = useTrueFalse();
+  const content = isEditing ? (
+    <>
+      <Control
+        as="input"
+        className="table-name__name"
+        value={name}
+        size="sm"
+        onChange={(e) => onNameChange(e.target.value)}
+      />
+      <Button size="sm" onClick={setNotEditing}>
+        <MdCheck />
+      </Button>
+    </>
+  ) : (
+    <>
+      <div className="table-name__name">{name}</div>
+      <Button size="sm" onClick={setEditing}>
+        <MdEdit />
+      </Button>
+    </>
+  );
+
+  return (
+    <Form className="table-name" inline>
+      <Group>
+        <Label className="table-name__label">Table Name: </Label>
+        {content}
+      </Group>
+    </Form>
+  );
 }
 
 export function tableNameReducer(state: string, action: SimpleTableAction) {

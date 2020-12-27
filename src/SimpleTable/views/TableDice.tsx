@@ -1,27 +1,32 @@
-import { Form } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import Group from "react-bootstrap/FormGroup";
+import Control from "react-bootstrap/FormControl";
+import Label from "react-bootstrap/FormLabel";
 import { DiceType, DICE_VALUES } from "../../Dice";
 import { SimpleTableAction } from "../actions";
+import "./TableDice.scss";
 
-export function TableDice({
-  dice,
-  onDiceChange,
-}: {
+export interface TableDiceProps {
   dice: DiceType;
-  onDiceChange: (x: DiceType) => void;
-}) {
+  onDiceChange(dice: DiceType): void;
+}
+
+export function TableDice({ dice, onDiceChange }: TableDiceProps) {
   return (
-    <Form.Group>
-      <Form.Label>Dice Type</Form.Label>
-      <Form.Control
-        as="select"
-        value={dice}
-        onChange={(e) => onDiceChange(e.target.value as DiceType)}
-      >
-        {DICE_VALUES.map((d) => (
-          <option key={d}>{d}</option>
-        ))}
-      </Form.Control>
-    </Form.Group>
+    <Form inline className="table-dice">
+      <Group>
+        <Label className="table-dice__label">Dice Type</Label>
+        <Control
+          as="select"
+          value={dice}
+          onChange={(e) => onDiceChange(e.target.value as DiceType)}
+        >
+          {DICE_VALUES.map((d) => (
+            <option key={d}>{d}</option>
+          ))}
+        </Control>
+      </Group>
+    </Form>
   );
 }
 

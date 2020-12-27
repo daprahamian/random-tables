@@ -11,6 +11,9 @@ import {
 import { ImportModal } from "./components/ImportModal";
 import { ExportModal } from "./components/ExportModal";
 import { useTrueFalse } from "./util/useTrueFalse";
+import { messageFailure, messageSuccess } from "./util/userMessage";
+import { validateModel } from "./SimpleTable/validateModel";
+import { roll } from "./Dice";
 
 function App() {
   const [tableData, dispatchTableData] = useSimpleTableReducer(getEmptyTable);
@@ -23,7 +26,28 @@ function App() {
       const newTableData = fromJSON(json);
       dispatchTableData(builders.set(newTableData));
     } catch (e) {
-      alert(e.message);
+      messageFailure(e.message);
+    }
+  };
+
+  const handleValidateModel = () => {
+    try {
+      validateModel(tableData);
+      messageSuccess("Table model is valid");
+    } catch (e) {
+      messageFailure(`Validation Failure: ${e.message}`);
+    }
+  };
+
+  const handleRollTable = () => {
+    try {
+      validateModel(tableData);
+      const rollResult = rollTable(tableData);
+      messageSuccess(
+        `Your roll was ${rollResult.rollValue}\n\n${rollResult.description}`
+      );
+    } catch (e) {
+      messageFailure(`Validation Failure: ${e.message}`);
     }
   };
 
@@ -36,8 +60,10 @@ function App() {
         <Button
           onClick={() => dispatchTableData(builders.set(getSampleData()))}
         >
-          Load Test Data
+          Load Sample Data
         </Button>
+        <Button onClick={handleValidateModel}>Validate Model</Button>
+        <Button onClick={handleRollTable}>Roll!</Button>
       </div>
       <SimpleTable data={tableData} dispatch={dispatchTableData} />
       <ImportModal
@@ -63,6 +89,18 @@ function getEmptyTable(): SimpleTableData {
     dice: "d20",
     rows: [],
   };
+}
+
+function rollTable(tableData: SimpleTableData) {
+  const rollValue = roll(tableData.dice);
+
+  for (const { min, max, description } of tableData.rows) {
+    const _max = max == null ? min : max;
+    if (rollValue >= min && rollValue <= _max) {
+      return { rollValue, description };
+    }
+  }
+  throw new Error("How did you get here?");
 }
 
 export default App;

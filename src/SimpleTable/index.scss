@@ -1,13 +1,14 @@
-.table-name {
-  max-width: 300px;
-  display: flex;
-  flex-direction: row;
-}
-
-.roll-column {
-  width: 15%;
-}
-
-.trash-column {
-  width: 5%;
+.simple-table {
+  .simple-table__add-button-container {
+    padding: 0;
+  }
+  &__roll-column {
+    width: 15%;
+  }
+  &__trash-column {
+    width: 5%;
+  }
+  &__add-button {
+    width: 100%;
+  }
 }

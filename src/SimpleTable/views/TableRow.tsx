@@ -48,15 +48,12 @@ export function TableRow({ index, data, dispatch }: TableRowProps) {
   );
 }
 
-function TableRowRange({
-  min,
-  max,
-  onChange,
-}: {
+interface TableRowRangeProps {
   min: number;
   max?: number;
-  onChange: (min: number, max?: number | undefined) => void;
-}) {
+  onChange(min: number, max?: number | undefined): void;
+}
+function TableRowRange({ min, max, onChange }: TableRowRangeProps) {
   const [isEditing, setEditing, setNotEditing] = useTrueFalse();
 
   const handleMin = useCallback(
@@ -113,13 +110,14 @@ function TableRowRange({
   }
 }
 
+interface TableRowDescriptionProps {
+  description: string;
+  onChange(description: string): void;
+}
 function TableRowDescription({
   description,
   onChange,
-}: {
-  description: string;
-  onChange: (s: string) => void;
-}) {
+}: TableRowDescriptionProps) {
   const [isEditing, setEditing, setNotEditing] = useTrueFalse();
 
   if (isEditing) {

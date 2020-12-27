@@ -1,4 +1,6 @@
 import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
+import { MdAdd } from "react-icons/md";
 import { SimpleTableData } from "./dataTypes";
 import { builders, SimpleTableDispatch } from "./actions";
 import "./index.scss";
@@ -26,9 +28,9 @@ export function SimpleTable({ data, dispatch }: SimpleTableProps) {
       <Table striped>
         <thead>
           <tr>
-            <th className="roll-column">Roll</th>
-            <th className="description-column">Result</th>
-            <th className="trash-column"></th>
+            <th className="simple-table__roll-column">Roll</th>
+            <th className="simple-table__description-column">Result</th>
+            <th className="simple-table__trash-column"></th>
           </tr>
         </thead>
         <tbody>
@@ -36,6 +38,18 @@ export function SimpleTable({ data, dispatch }: SimpleTableProps) {
             <TableRow key={i} index={i} data={rowData} dispatch={dispatch} />
           ))}
         </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={3} className="simple-table__add-button-container">
+              <Button
+                className="simple-table__add-button"
+                onClick={() => dispatch(builders.addRow())}
+              >
+                <MdAdd />
+              </Button>
+            </td>
+          </tr>
+        </tfoot>
       </Table>
     </div>
   );
